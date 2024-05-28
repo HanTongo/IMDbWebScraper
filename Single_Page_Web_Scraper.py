@@ -1,6 +1,8 @@
 from requests import get
 from bs4 import BeautifulSoup
 import pandas as pd
+from time import sleep
+from random import randint
 
 # Lists to store the scraped data in
 names = []
@@ -10,7 +12,7 @@ metascores = []
 votes = []
 
 # Grabs at least something from the site.
-url = 'https://www.imdb.com/search/title/?title_type=feature&release_date=2003-01-01,2003-12-31'
+url = 'https://www.imdb.com/search/title/?title_type=feature&release_date=2003&sort=boxoffice_gross_us,desc'
 
 # Headers used as IMDB doesn't allow the get() without a user agent. 
 # Turns and keeps movie titles in English
