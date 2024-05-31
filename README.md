@@ -18,6 +18,7 @@ Make sure Python is installed. You can download it from [python.org](https://www
 
 * Clone this repo to your computer.
 * Navigate to the project directory `cd SinglePageWebScraperForIMDb`.
+* Run `python main.py`
 
 ### Install the requirements
  
