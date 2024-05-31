@@ -1,8 +1,6 @@
 from requests import get
 from bs4 import BeautifulSoup
 import pandas as pd
-from time import sleep
-from random import randint
 
 # Lists to store the scraped data in
 names = []
