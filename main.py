@@ -6,7 +6,6 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import warnings
 
-
 # Lists to store the scraped data in
 names = []
 years = []
@@ -15,38 +14,34 @@ metascores = []
 votes = []
 
 # Preparing the url parameter to retrieve film data
-years_url = [str(i) for i in range(1940,2023)]
-
-# Grabs at least something from the site.
-url = 'https://www.imdb.com/search/title/?title_type=feature&release_date=2003&sort=boxoffice_gross_us,desc'
+years_url = [str(i) for i in range(1940,2024)]
 
 # Headers used as IMDB doesn't allow the get() without a user agent. 
 # Turns and keeps movie titles in English
 headers = {"Accept-Language": "en-US, en;q=0.5",
            "User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'}
 
-# Implemented the headers to grab url items.
-response = get(url, headers=headers)
-html_soup = BeautifulSoup(response.text, 'html.parser')
-
 timestart_time = time.time() 
 requests = 0 
 
 for years_url in years_url:
 
-    # Make a request
+    # Makes a request to IMDb for a particular year of films
     response = get("https://www.imdb.com/search/title/?title_type=feature&release_date=" + years_url + "&sort=boxoffice_gross_us,desc", headers=headers)
     sleep(randint(5,8)) 
     requests += 1 
     elapsed_time = time.time() - timestart_time 
     print('Request: {}; Frequency: {} requests/s'.format(requests, requests/elapsed_time))
 
+    # Warnings if unable to request from IMDb. 
     if response.status_code != 200:
         warnings.warn("Request: {}; Status code: {}".format(requests, response.status_code))
-    
-    if requests > 83:
+
+    # Prevents endless requests
+    if requests > 84:
         warnings.warn("Number of requests was greater than expected.")
 
+    # Allows the parsing of the IMDb page
     html_soup = BeautifulSoup(response.text, 'html.parser')
 
     # Identifies the 50 entries on the page, 
@@ -69,7 +64,7 @@ for years_url in years_url:
             rating_retrieval = container.find("span", class_="ipc-rating-star ipc-rating-star--base ipc-rating-star--imdb ratingGroup--imdb-rating")
             imdb_rating = float(rating_retrieval.text[:3])
             imdb_ratings.append(imdb_rating)
-            
+
             # Movie's Metascore
             metascore = float(container.find("span", class_="sc-b0901df4-0 bcQdDJ metacritic-score-box").text)
             metascores.append(metascore)
@@ -80,11 +75,18 @@ for years_url in years_url:
             votes.append(vote)
 
 # Sets up dataframe to present data
-page_data_df = pd.DataFrame({"Movie": names,
-                        "Year Released": years,
-                        "IMDb": imdb_ratings,
-                        "Metascore": metascores,
-                        "Votes": votes
-                        })
+movie_ratings = pd.DataFrame({"Movie": names,
+                             "Year Released": years,
+                             "IMDb": imdb_ratings,
+                             "Metascore": metascores,
+                             "Votes": votes
+                             })
 
-print(page_data_df)
+# Normalises the IMDb score so that it can be on the same scale as Metascore
+movie_ratings['n_IMDb'] = movie_ratings['IMDb'] * 10
+
+# Reorder the columns
+movie_ratings = movie_ratings[['Movie', 'Year Released', 'IMDb', "n_IMDb", 'Metascore', 'Votes']]
+
+# Output the results to a csv
+movie_ratings.to_csv("movie_ratings.csv")
