@@ -16,22 +16,24 @@ votes = []
 # Preparing the url parameter to retrieve film data
 years_url = [str(i) for i in range(1940,2024)]
 
-# Headers used as IMDB doesn't allow the get() without a user agent. 
+# Headers used as IMDB doesn't allow the get() without a user agent
 # Turns and keeps movie titles in English
 headers = {"Accept-Language": "en-US, en;q=0.5",
            "User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'}
 
+# Prepares requests timing
 timestart_time = time.time() 
 requests = 0 
 
+# Loops through 1940 to 2023
 for years_url in years_url:
 
-    # Makes a request to IMDb for a particular year of films
+    # Makes a request to IMDb for a particular year of films. Pauses for the next request. Reports requests per second.
     response = get("https://www.imdb.com/search/title/?title_type=feature&release_date=" + years_url + "&sort=boxoffice_gross_us,desc", headers=headers)
     sleep(randint(5,8)) 
     requests += 1 
     elapsed_time = time.time() - timestart_time 
-    print('Request: {}; Frequency: {} requests/s'.format(requests, requests/elapsed_time))
+    print("Request: {}; Frequency: {} requests/s".format(requests, requests/elapsed_time))
 
     # Warnings if unable to request from IMDb. 
     if response.status_code != 200:
@@ -40,6 +42,7 @@ for years_url in years_url:
     # Prevents endless requests
     if requests > 84:
         warnings.warn("Number of requests was greater than expected.")
+        break
 
     # Allows the parsing of the IMDb page
     html_soup = BeautifulSoup(response.text, 'html.parser')
@@ -52,7 +55,7 @@ for years_url in years_url:
         # If the movie has a Metascore, then extract:
         if container.find("span", class_="metacritic-score-label") is not None:
             
-            # Movie Title 
+            # Movie Title
             name = container.h3.text[3:]
             names.append(name)
 
