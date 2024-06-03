@@ -35,10 +35,15 @@ Make sure Python is installed. You can download it from [python.org](https://www
 Patterns and Insights
 --------------------
 
-!["lol"](assets/Figure_1.png)
+#### Initial Analysis - IMDb rating, Metascore and both compared
+
+!["IMDb and Metascore Rating, and both compared"](assets/Figure_1.png)
+Distribution of IMDb rating and Metascore rating, for the top grossing films from 1940 to 2023. 
+
+
+
 
 Extending this
 --------------
 
-Any feedback and comments are greatly welcome.
-I am planning to work on a multipage version of this, and then proceeding to generate insights on the data collected.
+Any feedback and comments are greatly welcome!
