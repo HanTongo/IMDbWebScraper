@@ -12,25 +12,35 @@ Additionally with the data collected, I can plot and analyse the data using matp
 Installation
 ------------
 
-### Prerequisites
-
-Make sure Python is installed. You can download it from [python.org](https://www.python.org/downloads/).
-
-### Install the requirements
-
-* Install the requirements using `pip install -r requirements.txt`.
-  * Create a virtual environment (optional)
-  
-#### Download and run data-retrieval program
-
+###
+* Download and install Git: https://git-scm.com/downloads. 
+* Download and install 64-bit Python 3. 
 * Clone this repo to your computer.
+```shell
+git clone https://github.com/HanTongo/IMDbWebScraper.git
+```
 * Navigate to the project directory.
-* Run `python main.py`
+```shell
+cd IMDBWebScraper
+```
+* Install the required packages 
+```shell
+pip install -r requirements.txt
+```
+  * Create a virtual environment (optional)
+
 
 #### Analyse the data
 
+* Run `python main.py`
+```shell
+python main.py
+```
 * After running `python main.py`, a **movie_ratings.csv** should be created.
 * Run `python analyse.py` to display the distribution of IMDb and Metascore ratings. 
+```shell
+python analyse.py
+```
 
 Patterns and Insights
 --------------------
@@ -39,6 +49,7 @@ Patterns and Insights
 
 !["IMDb and Metascore Rating, and both compared"](assets/Figure_1.png)
 Distribution of IMDb rating and Metascore rating, for the top grossing films from 1940 to 2023. 
+
 
 **Starting with the IMDB histogram, we can see that most ratings are between 6 and 8. There are few movies with a rating greater than 8, and even fewer with a rating smaller than 4. This indicates that both very good movies and very bad movies are rarer.**
 
